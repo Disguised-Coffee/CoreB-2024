@@ -51,6 +51,10 @@ public class DriveTrain extends SubsystemBase {
         drive.tankDrive(speeds.left * m_maxOutput, speeds.right * m_maxOutput);
     }
 
+    public void setMotors(double speedL, double speedR){
+        drive.tankDrive(speedL, speedR);
+    }
+
     public void stop() {
         System.out.print("Executing Stop func in Drive Train!");
     }
