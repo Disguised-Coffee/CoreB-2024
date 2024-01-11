@@ -91,15 +91,15 @@ public class Robot extends TimedRobot {
     // Left bumper picks up with the intake and
     //  left trigger shoots with the intake.
 
-    // intake.setArm(-xbox.getLeftY() * 0.2);
+    intake.setArm(-xbox.getLeftY() * 0.2);
 
-    // if (xbox.getLeftBumper()) {
-    //   intake.setIntake(-1.0);
-    // } else if (xbox.getLeftTriggerAxis() > 0.2) {
-    //   intake.setIntake(1.0);
-    // } else {
-    //   intake.setIntake(0.0);
-    // }
+    if (xbox.getLeftBumper()) {
+      intake.setIntake(-1.0);
+    } else if (xbox.getLeftTriggerAxis() > 0.2) {
+      intake.setIntake(1.0);
+    } else {
+      intake.setIntake(0.0);
+    }
 
   }
 
