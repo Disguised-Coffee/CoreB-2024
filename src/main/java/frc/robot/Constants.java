@@ -1,46 +1,39 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 package frc.robot;
 
-public interface Constants {
+/**
+ * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants should be declared
+ * globally (i.e. public static). Do not put anything functional in this class.
+ *
+ * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * constants are needed, to reduce verbosity.
+ */
+public final class Constants {
+  public static class OperatorConstants{
+    public static final int kDriverControllerPort = 0;
+    public static final int kMaxSpeedButton = 0;
+    public static final int kMaxTurnRateButton = 1;
+  }
+  
+  public static class ManipulatorConstants {
+    public static final double kFeederSpeed = 0.3;
+    public static final double kLauncherSpeed = 1.0;
+  }
 
-    interface Ports {
+  public static class CanIDs{
+    public static final int FL_MOTOR = 7, RL_MOTOR = 4, FR_MOTOR = 7, RR_MOTOR = 2;
 
-        int CONTROLLER = 0;
+    public static final int M_LAUNCHER = 5;
+    public static final int M_FEEDER = 6;
+  }
 
-        int MOTOR_LEFT1 = 3, MOTOR_LEFT2 = 4;
-        int MOTOR_RIGHT1 = 7, MOTOR_RIGHT2 = 2;
-
-        int ARM = 5;
-        int INTAKE = 6;
-    }
-
-    interface Limelight {
-
-        // Limelight offset relative to the center of the robot
-        // Measured in meters
-        double OFFSET_RIGHT = 0.32;
-        double OFFSET_UP = 0.55;
-        double OFFSET_FORWARDS = 0.0;
-    }
-
-    interface SearchForTag {
-
-        double TURN_SPEED = 0.2;
-
-    }
-
-    interface MoveTowardTag {
-
-        // Measured in portion of maximum speed
-        double MOVE_SPEED = 0.3;
-        double TURN_SPEED = 0.1;
-
-        // Measured in degrees
-        double MIN_ANGLE = -12;
-        double MAX_ANGLE = -8;
-
-        // Measured in meters
-        double SHOOT_DISTANCE = 1;
-
-    }
-
+  public static class DrivetrainConstants{
+    public static final double kDefaultDriveSpeed = 0.7;
+    public static final double kDefaultTurnSpeed = 1;
+  }
+  
 }
