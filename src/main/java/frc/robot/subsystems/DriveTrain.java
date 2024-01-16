@@ -25,8 +25,12 @@ public class DriveTrain extends SubsystemBase {
         left2.follow(left1);
         right2.follow(right1);
 
-        drive = new DifferentialDrive(left1, right2);
-        drive.setDeadband(RobotDriveBase.kDefaultDeadband);
+        drive = new DifferentialDrive(left1, right1);
+        drive.setDeadband(0.05);
+        // System.out.print(left1.getEncoder().getPosition());
+        // System.out.print(left2.getEncoder().getPosition());
+        // System.out.print(right1.getEncoder().getPosition());
+        // System.out.print(right2.getEncoder().getPosition());
     }
 
     // OLD, VERIFY THIS.
@@ -39,16 +43,21 @@ public class DriveTrain extends SubsystemBase {
         // that it calls #setMotors so we can properly invert 
         System.out.printf("arcade: %.3f, %.3f\n", xSpeed, zRotation);
 
-        xSpeed *= -1;
+        xSpeed *= 1;
         
         var m_maxOutput = RobotDriveBase.kDefaultMaxOutput;
 
         xSpeed = MathUtil.applyDeadband(xSpeed, RobotDriveBase.kDefaultDeadband);
         zRotation = MathUtil.applyDeadband(zRotation, RobotDriveBase.kDefaultDeadband);
     
-        var speeds = DifferentialDrive.arcadeDriveIK(xSpeed, zRotation, false);
+        // var speeds = DifferentialDrive.arcadeDriveIK(xSpeed, zRotation, false);
     
-        drive.tankDrive(speeds.left * m_maxOutput, speeds.right * m_maxOutput);
+        drive.arcadeDrive(xSpeed * m_maxOutput, zRotation * m_maxOutput);
+
+        // System.out.print(left1.getEncoder().getPosition());
+        // System.out.print(left2.getEncoder().getPosition());
+        // System.out.print(right1.getEncoder().getPosition());
+        // System.out.print(right2.getEncoder().getPosition());
     }
 
     public void setMotors(double speedL, double speedR){

@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
 
     var t = Limelight.targetPos();
     if (t == null) {
-      System.out.println("No Limelight target!");
+      //System.out.println("No Limelight target!");
     } else {
       System.out.printf("Target position: {x: %.3f, y: %.3f, z: %.3f}\n", t.getX(), t.getY(), t.getZ());
     }
@@ -74,7 +74,7 @@ public class Robot extends TimedRobot {
     // Right joystick controls movement (arcade drive)
     // Right bumper makes it go faster.
     double xScalar = 0.5;
-    double zScalar = 0.4;
+    double zScalar = 0.5;
 
     if (xbox.getRightBumper()) {
       xScalar = 1;
@@ -84,8 +84,8 @@ public class Robot extends TimedRobot {
     double y = xbox.getRightY(), x = xbox.getRightX();
 
     driveTrain.arcadeDrive(
-      -y * xScalar,
-      x * zScalar
+      -x * zScalar,
+      -y * xScalar
     );
     // Left joystick controls the arm.
     // Left bumper picks up with the intake and
