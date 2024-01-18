@@ -19,7 +19,7 @@ import frc.robot.Constants.DrivetrainConstants;
 public class Drivetrain extends SubsystemBase {
   
   private CANSparkMax left1 = new CANSparkMax(CanIDs.FL_MOTOR, MotorType.kBrushed), 
-                        left2 = new CANSparkMax(CanIDs.FR_MOTOR, MotorType.kBrushed), 
+                        left2 = new CANSparkMax(CanIDs.RL_MOTOR, MotorType.kBrushed), 
                         right1 = new CANSparkMax(CanIDs.FR_MOTOR, MotorType.kBrushed), 
                         right2 = new CANSparkMax(CanIDs.RR_MOTOR, MotorType.kBrushed);
   private DifferentialDrive drive;

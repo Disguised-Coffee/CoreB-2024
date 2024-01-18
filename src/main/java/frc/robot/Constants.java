@@ -25,7 +25,7 @@ public final class Constants {
   }
 
   public static class CanIDs{
-    public static final int FL_MOTOR = 7, RL_MOTOR = 4, FR_MOTOR = 7, RR_MOTOR = 2;
+    public static final int FL_MOTOR = 3, RL_MOTOR = 4, FR_MOTOR = 7, RR_MOTOR = 2;
 
     public static final int M_LAUNCHER = 5;
     public static final int M_FEEDER = 6;
