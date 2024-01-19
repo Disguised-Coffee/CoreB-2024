@@ -6,11 +6,11 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.Autos;
-import frc.robot.commands.Shoot;
+// import frc.robot.commands.Autos;
+// import frc.robot.commands.Shoot;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Feeder;
-import frc.robot.subsystems.Launcher;
+// import frc.robot.subsystems.Feeder;
+// import frc.robot.subsystems.Launcher;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj.Joystick;
@@ -29,9 +29,9 @@ import frc.robot.Constants.*;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Launcher m_Launcher = new Launcher();
+  // private final Launcher m_Launcher = new Launcher();
   private final Drivetrain r_Drivetrain = new Drivetrain();
-  private final Feeder m_Feeder = new Feeder();
+  // private final Feeder m_Feeder = new Feeder();
 
   private final Joystick m_Joystick = new Joystick(OperatorConstants.kDriverControllerPort);
 
@@ -67,12 +67,14 @@ public class RobotContainer {
     //Should set the 
 
     //Check this []
-    new JoystickButton(m_Joystick, OperatorConstants.kMaxSpeedButton).
-      toggleOnTrue(new FunctionalCommand(null, 
-      () -> r_Drivetrain.enableMaxDriveSpeedOutput(true), 
-      null, 
-      null)
-    );
+
+    // DO NOT PASS NULL OBJECTS.
+    // new JoystickButton(m_Joystick, OperatorConstants.kMaxSpeedButton).
+    //   toggleOnTrue(new FunctionalCommand(null, 
+    //   () -> r_Drivetrain.enableMaxDriveSpeedOutput(true), 
+    //   null, 
+    //   null)
+    // );
     // new JoystickButton(m_Joystick, OperatorConstants.kMaxTurnRateButton).
     //   toggleOnTrue(new FunctionalCommand(null, 
     //   () -> r_Drivetrain.enableMaxTurnRateOutput(true), 
