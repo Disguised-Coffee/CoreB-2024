@@ -9,16 +9,11 @@ import frc.robot.commands.ArcadeDrive;
 // import frc.robot.commands.Autos;
 // import frc.robot.commands.Shoot;
 import frc.robot.subsystems.Drivetrain;
+// import frc.robot.subsystems.Limelight;
 // import frc.robot.subsystems.Feeder;
 // import frc.robot.subsystems.Launcher;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.*;
 
 
 /**
@@ -33,27 +28,33 @@ public class RobotContainer {
   private final Drivetrain r_Drivetrain = new Drivetrain();
   // private final Feeder m_Feeder = new Feeder();
 
+  //Test Limelight
+  // public final Limelight m_Limelight = new Limelight();
+
+  /**
+   * Idea:
+   * 
+   * While active, look for limelight
+   */
+
+
   private final Joystick m_Joystick = new Joystick(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
-    //Check this []
-    // ()-> is a lambda thing, which is familiar if when you look at JS
+    // ()-> is a lambda thing, which is familiar when you look at JS
     r_Drivetrain.setDefaultCommand(new ArcadeDrive(r_Drivetrain, 
-              () -> m_Joystick.getRawAxis(1),
-              () -> m_Joystick.getRawAxis(2)));
+                      () -> m_Joystick.getRawAxis(1), 
+                      () -> m_Joystick.getRawAxis(0), 
+                      () -> m_Joystick.getRawButton(OperatorConstants.kMaxSpeedButton),  //CHECK THESE []
+                      () -> m_Joystick.getRawButton(OperatorConstants.kMaxTurnRateButton)
+    ));
   }
 
   /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
+   * Use this method to define your trigger->command mappings. 
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
@@ -62,25 +63,6 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-
-    //r_Drivetrain.enableMaxDriveSpeedOutput(true)
-    //Should set the 
-
-    //Check this []
-
-    // DO NOT PASS NULL OBJECTS.
-    // new JoystickButton(m_Joystick, OperatorConstants.kMaxSpeedButton).
-    //   toggleOnTrue(new FunctionalCommand(null, 
-    //   () -> r_Drivetrain.enableMaxDriveSpeedOutput(true), 
-    //   null, 
-    //   null)
-    // );
-    // new JoystickButton(m_Joystick, OperatorConstants.kMaxTurnRateButton).
-    //   toggleOnTrue(new FunctionalCommand(null, 
-    //   () -> r_Drivetrain.enableMaxTurnRateOutput(true), 
-    //   null, 
-    //   null)
-    // );
   }
 
   /**
@@ -90,6 +72,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return null; // TODO []
   }
 }

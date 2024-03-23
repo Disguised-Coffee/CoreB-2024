@@ -14,26 +14,47 @@ package frc.robot;
  */
 public final class Constants {
   public static class OperatorConstants{
-    public static final int kDriverControllerPort = 0;
-    public static final int kMaxSpeedButton = 0;
-    public static final int kMaxTurnRateButton = 1;
+    public static final int kDriverControllerPort = 0,
+                            kMaxSpeedButton = 3,
+                            kMaxTurnRateButton = 4;
+  }
+
+  public static class AutonomousConstants{
+    // Should be used when intially searching for a tag
+    public final class Searching{
+      public static final double  kMaxSearchingTime = 12,
+                                  kSearchTurnSpeed = 0.5;
+    }
+    public final class Driving{
+      public static final double kDistanceThresholdFromTag = 1;
+      public static final int kTimeByTagUntilTimeOut = 12;
+      public static final double kWheelToTicks = 1.0; //TODO
+    }
   }
   
   public static class ManipulatorConstants {
-    public static final double kFeederSpeed = 0.3;
-    public static final double kLauncherSpeed = 1.0;
+    public static final double  kLauncherSpeed = 1.0,
+                                kFeederSpeed = 0.3;
   }
 
   public static class CanIDs{
-    public static final int FL_MOTOR = 3, RL_MOTOR = 4, FR_MOTOR = 7, RR_MOTOR = 2;
-
-    public static final int M_LAUNCHER = 5;
-    public static final int M_FEEDER = 6;
+    public static final int 
+                            //DRIVETRAIN
+                            FRONTLEFT_MOTOR = 4, 
+                            REARLEFT_MOTOR = 5, 
+                            FRONTRIGHT_MOTOR = 7, 
+                            REARRIGHT_MOTOR = 6,
+                            //SHOOTER
+                            FLYWHEEL_MOTOR = 3, 
+                            FEEDER_MOTOR = 2,
+                            //PIGEON
+                            PIGEON_COMP = 8;
   }
 
   public static class DrivetrainConstants{
-    public static final double kDefaultDriveSpeed = 0.7;
-    public static final double kDefaultTurnSpeed = 1;
+    public static final double  kDefaultDriveSpeed = 0.7,
+                                kDefaultTurnSpeed = 1,
+                                kDefaultDeadband = 0.05;
   }
   
 }

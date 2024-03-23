@@ -4,11 +4,10 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.REVLibError;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-
+import com.ctre.phoenix.motorcontrol.Faults;
+import com.ctre.phoenix.motorcontrol.FollowerType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,26 +17,24 @@ import frc.robot.Constants.DrivetrainConstants;
 
 public class Drivetrain extends SubsystemBase {
   
-  private CANSparkMax left1 = new CANSparkMax(CanIDs.FL_MOTOR, MotorType.kBrushed), 
-                        left2 = new CANSparkMax(CanIDs.RL_MOTOR, MotorType.kBrushed), 
-                        right1 = new CANSparkMax(CanIDs.FR_MOTOR, MotorType.kBrushed), 
-                        right2 = new CANSparkMax(CanIDs.RR_MOTOR, MotorType.kBrushed);
+  private WPI_TalonSRX left1 = new WPI_TalonSRX(CanIDs.FRONTLEFT_MOTOR), 
+                  left2 = new WPI_TalonSRX(CanIDs.REARLEFT_MOTOR), 
+                  right1 = new WPI_TalonSRX(CanIDs.FRONTRIGHT_MOTOR), 
+                  right2 = new WPI_TalonSRX(CanIDs.REARRIGHT_MOTOR);
+
   private DifferentialDrive drive;
   private double maxDriveSpeedLimit = DrivetrainConstants.kDefaultDriveSpeed, 
                   maxTurnSpeedLimit = DrivetrainConstants.kDefaultTurnSpeed;
 
-  public Drivetrain() {
-    left2.follow(left1);
-    right2.follow(right1);
+  public Faults _faults = new Faults();
 
-    // so we have positive parameter values
-    right1.setInverted(true);
-    right2.setInverted(true);
-    left1.setInverted(false);
-    left2.setInverted(false);
+  public Drivetrain() {
+    //set motor configs here
+    left2.follow(left1,FollowerType.PercentOutput);
+    right2.follow(right1,FollowerType.PercentOutput);
 
     drive = new DifferentialDrive(left1, right1);
-    drive.setDeadband(0.05);
+    drive.setDeadband(DrivetrainConstants.kDefaultDeadband);
   }
 
   public void arcadeDrive(double xSpeed, double zRotation) {
@@ -46,6 +43,12 @@ public class Drivetrain extends SubsystemBase {
     System.out.printf("arcade: %.3f, %.3f\n", xSpeed, zRotation);
   }
 
+  /**
+   * Drives the motors
+   * 
+   * @param speedL Input for Left motor
+   * @param speedR  Input for Right motor
+   */
   public void setMotors(double speedL, double speedR){
     drive.tankDrive(speedL * maxDriveSpeedLimit, speedR* maxTurnSpeedLimit);
   }
@@ -57,20 +60,20 @@ public class Drivetrain extends SubsystemBase {
     placeMotorVitals(left2, "Left2");
     placeMotorVitals(right1, "Right1");
     placeMotorVitals(right2, "Right2");
+    SmartDashboard.putNumber("Max Drive speed", maxDriveSpeedLimit);
   }
+
   
   /**
    * Outputs voltage, temp, and output of a motor to SmartDashboard
    * 
    * IMPORTANT: comment out lines to receive less info!
    * 
-   * @param m_motor CANSparkMax object to get data from 
+   * @param m_motor WPI_TalonSRX object to get data from 
    * @param motor_ID String, needed to identify which motor
    */
-  private void placeMotorVitals(CANSparkMax m_motor, String motor_ID){
+  private void placeMotorVitals(WPI_TalonSRX m_motor, String motor_ID){
     SmartDashboard.putNumber(motor_ID + "Voltage", m_motor.getBusVoltage());
-    SmartDashboard.putNumber(motor_ID + "Temperature", m_motor.getMotorTemperature());
-    // SmartDashboard.putNumber(motor_ID + "Output", m_motor.getAppliedOutput());
   }
 
   /**
@@ -81,24 +84,23 @@ public class Drivetrain extends SubsystemBase {
   public void enableBrakes(boolean isEnabled){
     // Translate the boolean to a IdleMode and an associated String
     String key = "Drivetrain Idle Mode";
-    IdleMode mode;
+    NeutralMode mode;
     String sd_mode;
     if(isEnabled){
-      mode = IdleMode.kBrake;
+      mode = NeutralMode.Brake;
       sd_mode = "Brake";
     }
     else{
-      mode = IdleMode.kCoast;
+      mode = NeutralMode.Coast;
       sd_mode = "Coast";
     }
     // so that we can put it in SmartDashboard
-    //       **[] Make sure that this also applies to follower motors 
-    if(left1.setIdleMode(mode) != REVLibError.kOk || left2.setIdleMode(mode) != REVLibError.kOk || right1.setIdleMode(mode) != REVLibError.kOk || right2.setIdleMode(mode) != REVLibError.kOk) {
-      SmartDashboard.putString(key, "Error ~ Couldn't setIdleMode().");
-    }
-    else{
-      SmartDashboard.putString(key, sd_mode);
-    }
+    left1.setNeutralMode(mode);
+    left2.setNeutralMode(mode);
+    right1.setNeutralMode(mode);
+    right2.setNeutralMode(mode);
+    
+    SmartDashboard.putString(key, sd_mode);
   }
 
 
@@ -106,7 +108,7 @@ public class Drivetrain extends SubsystemBase {
    * Changes the speed constant multiplier to allow the bot
    * to use the full capabilities of the motors.
    * 
-   * @param isEnabled - boolean: true --> disable limit
+   * @param isEnabled - boolean: true --> enable limit
    */
   public void enableMaxDriveSpeedOutput(boolean isEnabled){
     // variable = (condition) ? value_if_true : value_if_false;
