@@ -13,29 +13,49 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
 
-public class Launcher extends SubsystemBase {
+
+/**
+ * Concept:
+ * 
+ * Flywheel ramps up for shooting and then feeder places note onto shooter flywheel
+ * 
+ * 
+ * 
+ */
+public class Shooter extends SubsystemBase {
   
-  // change this later...
-  private CANSparkMax m_launcher = new CANSparkMax(CanIDs.M_LAUNCHER, MotorType.kBrushless);
+  private CANSparkMax feeder = new CANSparkMax(CanIDs.FEEDER_MOTOR, MotorType.kBrushed);
+  private CANSparkMax flywheel = new CANSparkMax(CanIDs.FLYWHEEL_MOTOR, MotorType.kBrushed);
 
   // private RelativeEncoder encoder;
 
-  public Launcher() {
-    // encoder = m_launcher.getEncoder();
-    m_launcher.setInverted(false);
+  public Shooter() {
+    // encoder = m_feeder.getEncoder();
+    feeder.setInverted(false);
+    flywheel.setInverted(false);
   }
 
+  public void setShooterSpeeds(double feederSpeed, double flywheelSpeed){
+    feeder.set(feederSpeed);
+    flywheel.set(flywheelSpeed);
+  }
 
-  //prob better for PID control to be here.
-  public void set(double xSpeed) {
+  public void release(double xSpeed) {
     // [] ensure that deadband doesn't need to be put for rotation parameter.
-    m_launcher.set(ManipulatorConstants.kLauncherSpeed);
+    System.out.println("Releasing the Note!");
+    feeder.set(ManipulatorConstants.kFeederSpeed);
+  }
+
+  public void accept(double xSpeed, double zRotation) {
+    // [] ensure that deadband doesn't need to be put for rotation parameter.
+    System.out.println("Accepting the Note!");
+    feeder.set(ManipulatorConstants.kFeederSpeed);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    placeMotorVitals(m_launcher, "Feeder");
+    placeMotorVitals(feeder, "Feeder");
   }
   
   /**
@@ -52,9 +72,6 @@ public class Launcher extends SubsystemBase {
     // SmartDashboard.putNumber(motor_ID + "Output", m_motor.getAppliedOutput());
   }
 
-  public void placeMotorPosVelo(CANSparkMax m_motor, String m_name){
-    SmartDashboard.putNumber(m_name + " Velocity", m_motor.getEncoder().getVelocity());
-  }
   /**
    * Enables motor braking in all wheels in DriveSubsystm
    * 
@@ -62,7 +79,7 @@ public class Launcher extends SubsystemBase {
    */
   public void enableBrakes(boolean isEnabled){
     // Translate the boolean to a IdleMode and an associated String
-    String key = "Drivetrain Idle Mode";
+    String key = "Shooter Motors";
     IdleMode mode;
     String sd_mode;
     if(isEnabled){
@@ -75,11 +92,26 @@ public class Launcher extends SubsystemBase {
     }
     // so that we can put it in SmartDashboard
     //       **[] Make sure that this also applies to follower motors 
-    if(m_launcher.setIdleMode(mode) != REVLibError.kOk) {
+    if(feeder.setIdleMode(mode) != REVLibError.kOk) {
       SmartDashboard.putString(key, "Error ~ Couldn't setIdleMode().");
     }
     else{
       SmartDashboard.putString(key, sd_mode);
     }
   }
+
+  /**
+   * Changes the speed constant multiplier to allow the bot
+   * to use the full capabilities of the motors.
+   * 
+   * @param isEnabled - boolean: true --> enable limit
+   */
+  // public void enableMaxDriveSpeedOutput(boolean isEnabled){
+  //   // variable = (condition) ? value_if_true : value_if_false;
+  //   //
+  //   // Clarification:
+  //   // if (condition) is true, then it is value_if_true. Else, it is value_if_false.
+  //   maxDriveSpeedLimit = (isEnabled) ? 1.0 : DrivetrainConstants.kDefaultDriveSpeed;
+  //   maxTurnSpeedLimit = (isEnabled) ? 1.0 : DrivetrainConstants.kDefaultDriveSpeed;
+  // }
 }

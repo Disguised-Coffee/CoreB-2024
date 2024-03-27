@@ -14,9 +14,21 @@ package frc.robot;
  */
 public final class Constants {
   public static class OperatorConstants{
-    public static final int kDriverControllerPort = 0,
+    public static final int 
+                            //DRIVING
+                            kDriverControllerPort = 0,
                             kMaxSpeedButton = 3,
-                            kMaxTurnRateButton = 4;
+                            kMaxTurnRateButton = 4, // TODO CHANGE
+                            //SHOOTING
+                            kShooterButton = 4,
+                            kAcceptButton = 2, // TODO CHECK.
+                            kToggleModeButton = 3;
+    public static final double kDefaultFlywheelSpeed = 0.8,
+                            kSecondsToWait = 1.5,
+                            kTimeToAcceptNote = 0.5,
+                            kSlewConstant = 0.5,
+                            kFeederOperatingSpeed = 0.5;
+
   }
 
   public static class AutonomousConstants{
@@ -28,7 +40,7 @@ public final class Constants {
     public final class Driving{
       public static final double kDistanceThresholdFromTag = 1;
       public static final int kTimeByTagUntilTimeOut = 12;
-      public static final double kWheelToTicks = 1.0; //TODO
+      public static final double kTicksToMeters = 1.0; //TODO
     }
   }
   

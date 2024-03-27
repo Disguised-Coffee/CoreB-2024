@@ -9,14 +9,17 @@ import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CanIDs;
 import frc.robot.Constants.DrivetrainConstants;
+import frc.robot.Constants.AutonomousConstants.Driving;
 
 public class Drivetrain extends SubsystemBase {
   
+  // Hopefully this does work. TODO
   private WPI_TalonSRX left1 = new WPI_TalonSRX(CanIDs.FRONTLEFT_MOTOR), 
                   left2 = new WPI_TalonSRX(CanIDs.REARLEFT_MOTOR), 
                   right1 = new WPI_TalonSRX(CanIDs.FRONTRIGHT_MOTOR), 
@@ -30,6 +33,8 @@ public class Drivetrain extends SubsystemBase {
 
   public Drivetrain() {
     //set motor configs here
+    right1.setInverted(true);
+    right2.setInverted(true);
     left2.follow(left1,FollowerType.PercentOutput);
     right2.follow(right1,FollowerType.PercentOutput);
 
@@ -37,6 +42,13 @@ public class Drivetrain extends SubsystemBase {
     drive.setDeadband(DrivetrainConstants.kDefaultDeadband);
   }
 
+  /**
+   * Allows the Drivetrain to be controlled with just a joystick
+   * What I love using.
+   * 
+   * @param xSpeed Forwards speed
+   * @param zRotation Rotational speed
+   */
   public void arcadeDrive(double xSpeed, double zRotation) {
     // [] ensure that deadband doesn't need to be put for rotation parameter.
     drive.arcadeDrive(xSpeed, zRotation);
@@ -53,6 +65,10 @@ public class Drivetrain extends SubsystemBase {
     drive.tankDrive(speedL * maxDriveSpeedLimit, speedR* maxTurnSpeedLimit);
   }
 
+  public Pair<Double, Double> getRawDistance(){
+    return new Pair<>(left1.getSelectedSensorPosition(), right1.getSelectedSensorPosition());
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -61,8 +77,8 @@ public class Drivetrain extends SubsystemBase {
     placeMotorVitals(right1, "Right1");
     placeMotorVitals(right2, "Right2");
     SmartDashboard.putNumber("Max Drive speed", maxDriveSpeedLimit);
+    // SmartDashboard.putBoolean("Motors", false);
   }
-
   
   /**
    * Outputs voltage, temp, and output of a motor to SmartDashboard
@@ -103,7 +119,6 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putString(key, sd_mode);
   }
 
-
   /**
    * Changes the speed constant multiplier to allow the bot
    * to use the full capabilities of the motors.
@@ -127,5 +142,17 @@ public class Drivetrain extends SubsystemBase {
    */
   public void enableMaxTurnRateOutput(boolean isEnabled){
     maxTurnSpeedLimit = (isEnabled) ? 1.0 : DrivetrainConstants.kDefaultTurnSpeed;
+  }
+
+  /**
+   * Converts ticks to meters and vice versa all in one method.
+   * 
+   * @param value double ~ value taken in, either meters or ticks
+   * @param getMeters boolean ~ whether that value was in meters or ticks 
+   * @return the 
+   */
+  public double tickMeterConvert(double value, boolean getMeters){
+    // (condition) ? value_if_true : value_if_false;
+    return (getMeters) ? (value * Driving.kTicksToMeters): (value / Driving.kTicksToMeters);
   }
 }

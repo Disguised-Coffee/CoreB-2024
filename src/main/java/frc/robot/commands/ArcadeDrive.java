@@ -51,7 +51,7 @@ public class ArcadeDrive extends Command {
   public void execute() {
     double realTimeSpeed = speedFunction.get();
     System.out.print(realTimeSpeed);
-    double realTimeTurnRate = turnFunction.get();
+    double realTimeTurnRate = -turnFunction.get();
     System.out.println(realTimeTurnRate);
     m_Drivetrain.arcadeDrive(realTimeSpeed, realTimeTurnRate);
     m_Drivetrain.enableMaxDriveSpeedOutput(maxSpeedFunction.get());

@@ -6,13 +6,17 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.NoteShoot;
+import frc.robot.commands.NoteAccept;
 // import frc.robot.commands.Autos;
 // import frc.robot.commands.Shoot;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Shooter;
 // import frc.robot.subsystems.Limelight;
 // import frc.robot.subsystems.Feeder;
 // import frc.robot.subsystems.Launcher;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 
 
@@ -26,7 +30,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   // private final Launcher m_Launcher = new Launcher();
   private final Drivetrain r_Drivetrain = new Drivetrain();
-  // private final Feeder m_Feeder = new Feeder();
+  private final Shooter r_shooter = new Shooter();
 
   //Test Limelight
   // public final Limelight m_Limelight = new Limelight();
@@ -61,8 +65,13 @@ public class RobotContainer {
     // new Trigger(m_exampleSubsystem::exampleCondition)
     //     .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
+    // Schedule Shooter cmd 
+    new JoystickButton(m_Joystick, OperatorConstants.kShooterButton)
+                .onTrue(new NoteShoot(r_shooter, 
+                                      () -> m_Joystick.getRawAxis(3), 
+                                      () -> m_Joystick.getRawButton(1), 
+                                      () -> m_Joystick.getRawButton(OperatorConstants.kToggleModeButton)));
+    new JoystickButton(m_Joystick, OperatorConstants.kAcceptButton).onTrue(new NoteAccept(r_shooter));
   }
 
   /**

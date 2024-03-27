@@ -4,42 +4,47 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 // import frc.robot.subsystems.Launcher;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Shooter;
 
 /** An example command that uses an example subsystem. */
-public class Shoot extends Command {
+public class NoteAccept extends Command {
   
-  private final Launcher m_Launcher;
+  private final Shooter shooter;
+  private Timer timer = new Timer(); //Keeps track of the time spent running the motors
 
   /**
-   * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public Shoot(Launcher subsystem) {
-    m_Launcher = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_Launcher);
+  public NoteAccept(Shooter subsystem) {
+    shooter = subsystem;
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    shooter.setShooterSpeeds(OperatorConstants.kFeederOperatingSpeed, OperatorConstants.kFeederOperatingSpeed);
+    timer.restart();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    shooter.setShooterSpeeds(0, 0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return timer.hasElapsed(OperatorConstants.kTimeToAcceptNote);
   }
 }
